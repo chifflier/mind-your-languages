@@ -12,6 +12,7 @@ education of developers or evaluators for secure software.
 ## Languages
 
 - [C](C.md)
+- [Python](Python.md)
 
 ## Submitting new examples
 
