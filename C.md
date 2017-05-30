@@ -1,3 +1,16 @@
+Table of Contents
+=================
+
+   * [C](#c)
+      * [Errors](#errors)
+         * [Cast signed vs unsigned](#cast-signed-vs-unsigned)
+      * [Tricks and less-known features](#tricks-and-less-known-features)
+         * [And operator like Perl](#and-operator-like-perl)
+         * [Pointer notation](#pointer-notation)
+         * [Preprocessor Abuse](#preprocessor-abuse)
+      * [The compiler is not your friend](#the-compiler-is-not-your-friend)
+         * [Read-only strings and segmentation faults](#read-only-strings-and-segmentation-faults)
+
 # C
 
 ## Errors
