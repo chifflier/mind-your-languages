@@ -16,6 +16,7 @@ education of developers or evaluators for secure software.
 - [OCaml](OCaml.md)
 - [PHP](PHP.md)
 - [Python](Python.md)
+- [Ruby](Ruby.md)
 
 ## Submitting new examples
 
