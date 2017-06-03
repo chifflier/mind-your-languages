@@ -12,6 +12,9 @@ education of developers or evaluators for secure software.
 ## Languages
 
 - [C](C.md)
+- [Javascript](Javascript.md)
+- [OCaml](OCaml.md)
+- [PHP](PHP.md)
 - [Python](Python.md)
 
 ## Submitting new examples
@@ -24,6 +27,14 @@ dependency, only shell script).
 ## Adding a new language
 
 Use the [template](template.md).
+
+## Credits
+
+Examples and ideas contributed by:
+
+- Pierre Chifflier
+- Olivier Levillain
+- Éric Jaeger
 
 ## License
 
