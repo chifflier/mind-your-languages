@@ -113,3 +113,114 @@ the loss of the `const` attribute is not signalled by the compiler.
 Tested with: gcc 6.3.0, clang 3.9
 
 ---
+
+
+
+## Undefined and unspecified behaviors
+
+---
+
+### Character size
+
+The size of a `char` is implementation defined. On some architectures it will be signed, and unsigned on others.
+
+Reference: ISO C99 section 6.2.5
+
+Solution: use `stdint.h` types
+
+---
+
+### Integer size
+
+The definition of the representation of integers is the following:
+
+```
+The rank of long long int shall be greater than the rank of long int, which
+shall be greater than the rank of int, which shall be greater than the rank of short
+int, which shall be greater than the rank of signed char.
+```
+
+Technically, a compiler with 17-bit integers is compliant with the specifications.
+
+The same is also true for `long` and `long long` types.
+
+Note that, unlike `char`, the integer types are all `signed` by default.
+
+Reference: ISO C99 section 6.3.1.1
+
+Solution: use `stdint.h` types
+
+---
+
+### Bitwise shift operators
+
+Shifting by a negative number of a number of bits greater than the size of the type is undefined.
+
+```c
+unsigned long setBit1(int n)
+{ return (1 << n); }
+
+unsigned long setBit2(int n)
+{ return ((unsigned long) 1 << n); }
+
+void main () {
+  printf ("%lu\n", setBit1 (33));
+  printf ("%lu\n", setBit2 (33));
+}
+```
+
+Reference: ISO C99 section 6.5.7
+
+Solution: don't do that
+
+---
+
+---
+
+### Function calls and arguments
+
+The expressions passed as arguments of a function call are evaluated in an undefined order.
+
+Example 1:
+```c
+{ int c=0; printf("%d %d\n",c++,c++); }
+
+{ int c=0; printf("%d %d\n",++c,++c); }
+
+{ int c=0; printf("%d %d\n",c=1,c=2); }
+```
+
+Results can be surprising:
+
+- The first line prints `1 0`
+- The second line prints `2 2`
+- The third line prints `1 1`
+
+
+
+
+Example 2:
+```c
+int f(int x,int y) { return (2*x)+y; }
+
+int main(void) {
+  int x=0;
+  int y=f((x=1),(x=3));
+  printf("x=%d\n",x);
+  printf("y=%d\n",y);
+  return 0;
+}
+```
+
+Output:
+```
+x=1
+y=3
+```
+Meaning that `x=1` was executed after `x=3` and passed as both arguments of function `f`.
+
+Reference: ISO C99 section 6.5.2.2
+
+Solution: don't do that
+
+---
