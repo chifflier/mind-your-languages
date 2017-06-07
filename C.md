@@ -10,6 +10,11 @@ Table of Contents
          * [Preprocessor Abuse](#preprocessor-abuse)
       * [The compiler is not your friend](#the-compiler-is-not-your-friend)
          * [Read-only strings and segmentation faults](#read-only-strings-and-segmentation-faults)
+      * [Undefined and unspecified behaviors](#undefined-and-unspecified-behaviors)
+         * [Character size](#character-size)
+         * [Integer size](#integer-size)
+         * [Bitwise shift operators](#bitwise-shift-operators)
+         * [Function calls and arguments](#function-calls-and-arguments)
 
 # C
 

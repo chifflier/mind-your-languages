@@ -1,3 +1,15 @@
+Table of Contents
+=================
+
+   * [Java](#java)
+      * [Language gotchas](#language-gotchas)
+         * [Overloaded methods and type promotions](#overloaded-methods-and-type-promotions)
+         * [Equality and integers](#equality-and-integers)
+         * [Serialization and static methods](#serialization-and-static-methods)
+      * [Source code](#source-code)
+         * [UTF-8](#utf-8)
+         * [Inner classes and attributes](#inner-classes-and-attributes)
+
 # Java
 
 ## Language gotchas
