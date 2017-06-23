@@ -7,6 +7,8 @@ Table of Contents
          * [End-of-line matters](#end-of-line-matters)
       * [Poisoning](#poisoning)
          * [The many ways to compare an integer](#the-many-ways-to-compare-an-integer)
+      * [Unexpected and surprising](#unexpected-and-surprising)
+         * [Methods vs local variables](#methods-vs-local-variables)
 
 # Ruby
 
@@ -95,6 +97,42 @@ There are many ways to compare a value.
 When overridind the `==` operator for a class, the comparisons are changed, but not all of them.
 
 Tested with: irb 2.3
+
+---
+
+## Unexpected and surprising
+
+---
+
+### Methods vs local variables
+
+```ruby
+class MyClass
+  def value
+    "my_value"
+  end
+
+  def do_things
+    puts value
+    if false
+      value = nil
+    end
+    puts value
+  end
+end
+
+MyClass.new.do_things
+```
+
+Expected result: `my_value` and `my_value`
+
+Result: `my_value` and ` `
+
+Reason: first occurence of value is a method call, and even though
+`value = nil` is not executed, the parser see value as a local variable after
+the if block.
+
+Tested with: ruby 2.3.3
 
 ---
 
