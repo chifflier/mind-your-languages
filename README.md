@@ -14,6 +14,7 @@ education of developers or evaluators for secure software.
 - [C](C.md)
 - [Java](Java.md)
 - [Javascript](Javascript.md)
+- [Lua](Lua.md)
 - [OCaml](OCaml.md)
 - [PHP](PHP.md)
 - [Python](Python.md)
