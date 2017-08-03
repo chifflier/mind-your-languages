@@ -4,8 +4,11 @@ Table of Contents
    * [Javascript](#javascript)
       * [Language gotchas](#language-gotchas)
          * [Javascript breaks transitivity](#javascript-breaks-transitivity)
+         * [Parsing integers](#parsing-integers)
 
 # Javascript
+
+* Many other examples here: [wtfjs](http://wtfjs.com)
 
 ## Language gotchas
 
