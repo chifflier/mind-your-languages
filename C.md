@@ -8,6 +8,7 @@ Table of Contents
          * [And operator like Perl](#and-operator-like-perl)
          * [Pointer notation](#pointer-notation)
          * [Preprocessor Abuse](#preprocessor-abuse)
+         * [Conditionals with Omitted Operands](#conditionals-with-omitted-operands)
       * [The compiler is not your friend](#the-compiler-is-not-your-friend)
          * [Read-only strings and segmentation faults](#read-only-strings-and-segmentation-faults)
       * [Undefined and unspecified behaviors](#undefined-and-unspecified-behaviors)
@@ -85,9 +86,27 @@ int i =
 ```
 ---
 
+### Conditionals with Omitted Operands
 
+Although illegal in standard C, [a GNU extension](https://gcc.gnu.org/onlinedocs/gcc/Conditionals.html) makes it possible to omit the middle operand in a conditional expression when using the ternary operator. If the condition evaluates to true, the value of the conditional expression is then that of the first operand, i.e. the value of the condition itself. The following two expressions are thus equivalent in GNU dialect of ISO C (e.g. when compiling with `-std=gnu89`):
+```c
+x ?: y
+x ? x : y
+```
 
+This extension is particularly useful when the evaluation of the condition has side effects, as it avoids performing them twice. However, this can make ternary conditions more difficult to read:
+```c
+/* From Linux v5.4-rc5 (https://elixir.bootlin.com/linux/v5.4-rc5/source/drivers/gpu/drm/i915/i915_active.c#L80) */
+return (void *)ref->active ?: (void *)ref->retire ?: (void *)ref;
 
+/* From Linux v5.4-rc5 (https://elixir.bootlin.com/linux/v5.4-rc5/source/net/rxrpc/local_object.c#L39) */
+diff = ((local->srx.transport_type - srx->transport_type) ?:
+        (local->srx.transport_len - srx->transport_len) ?:
+        (local->srx.transport.family - srx->transport.family));
+```
+and even more prone to type errors, as the condition must be type-compatible with the third operand.
+
+---
 
 
 
