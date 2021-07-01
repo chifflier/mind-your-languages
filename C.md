@@ -127,12 +127,12 @@ Expected result: warning or error
 
 Result: no warning with `-Wall -Wextra -pedantic`, segmentation fault at runtime
 
-Reason: `hello` is placed in the `.rodata` section and cannot be modified, so
-this code is expected to always segfault. Adding the `-Wwrite-strings` flags
-shows the problem, but this flags is not in `-Wall -Wextra -pedantic`.
-
-Additionally, line 1 is an implicit cast from `const char []` to `char *`, and
-the loss of the `const` attribute is not signalled by the compiler.
+Reason: For historical reasons, string literals are of type `char[]` in C but
+attempting to modify such an array is undefined behavior (C11 §6.4.5). In
+practice, most compilers place string literals in the `.rodata` section,
+therefore `hello` cannot be modified and this code is expected to always
+segfault. Adding the `-Wwrite-strings` flag shows the problem, but this flag is
+not in `-Wall -Wextra -pedantic`.
 
 Tested with: gcc 6.3.0, clang 3.9
 
