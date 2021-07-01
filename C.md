@@ -203,7 +203,7 @@ Solution: don't do that
 
 ### Function calls and arguments
 
-The expressions passed as arguments of a function call are evaluated in an undefined order.
+The expressions passed as arguments of a function call are evaluated in an unspecified order.
 
 Example 1:
 ```c
