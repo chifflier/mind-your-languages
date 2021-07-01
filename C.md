@@ -36,7 +36,7 @@ Expected result: `1>=-1`
 
 Result: `1<-1`
 
-Reason: `a` is compared as a signed integer and wraps to a large value
+Reason: According to the *usual arithmetic conversions* specified in C11 §6.3.1.8, operand `b` is implicitly converted to an expression of type `unsigned int` and thus evaluates to a large value.
 
 Tested with: gcc 6.3.0, clang 3.9
 
