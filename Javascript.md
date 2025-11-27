@@ -8,6 +8,7 @@ Table of Contents
       * [Parsing integers](#parsing-integers)
       * [Arrays are sometimes equal. Or not.](#arrays-are-sometimes-equal-or-not)
       * [Abstract and relational abstract comparisons](#abstract-and-relational-abstract-comparisons)
+      * [Objects and string obfuscation](#objects-and-string-obfuscation)
 <!--te-->
 
 # Javascript
@@ -160,6 +161,24 @@ true
 
 This is caused by the comparison algorithm: for objects, it only returns `true` if both sides refer to the _same_ object.
 
+### Objects and string obfuscation
+
+Due to objects internal conversions, it is easy to generate strings using only objects and operators:
+```javascript
+> (![]+[])
+"false"
+```
+
+Note the resulting type (string). This is caused by the `+` operator calling `ToPrimitive`, resulting in `[[DefaultValue]]` or the right operator, in this case returning an empty string. Since `![]` is evaluated to `false`, this gives `false+""` which is `"false"`
+
+Combining with other techniques to generate indices, it is easy to access a single character:
+```javascript
+> (![]+[])[+[]]
+"f"
+```
+
+If the letter can be indexed from a generated string, this is rather trivial.
+More complex examples require encoding, but it can be done using 6 characters only (see "Writing a sentence without using the Alphabet" [Part 1](https://bluewings.github.io/en/writing-a-sentence-without-using-the-alphabet/#weird-javascript-generator) and [Part 2](https://bluewings.github.io/en/writing-a-sentence-without-using-the-alphabet-part-2/), and [this site](https://jsfuck.com/)).
 
 ---
 
