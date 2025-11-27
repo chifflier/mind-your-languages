@@ -1,4 +1,7 @@
+Table of Contents
+=================
 <!--ts-->
+* [Table of Contents](#table-of-contents)
 * [Shell](#shell)
    * [Cursed code](#cursed-code)
       * [Multi-line shebang for C programs](#multi-line-shebang-for-c-programs)
