@@ -5,6 +5,7 @@ Table of Contents
 * [Javascript](#javascript)
    * [Language gotchas](#language-gotchas)
       * [Javascript breaks transitivity](#javascript-breaks-transitivity)
+      * [No transitivity for comparison either](#no-transitivity-for-comparison-either)
       * [Parsing integers](#parsing-integers)
       * [Arrays are sometimes equal. Or not.](#arrays-are-sometimes-equal-or-not)
       * [Abstract and relational abstract comparisons](#abstract-and-relational-abstract-comparisons)
@@ -32,6 +33,29 @@ Expected result: `'0'==0 and 0=='0.0' and '0'=='0.0'`
 Result: `'0'==0 and 0=='0.0' and '0'<>'0.0'`
 
 Reason: Strings can be casted to integers, except if compared to another string
+
+---
+
+### No transitivity for comparison either
+
+```javascript
+1 < 2 < 3  // true
+3 > 2 > 1  // false
+1 < 2 < 1  // true
+```
+
+Reason:
+
+This is caused by type conversion:
+```javascript
+1 < 2 < 3 // is evaluated to:
+true < 3  // true -> 1
+1 < 3     // -> true
+
+3 > 2 > 1 // is evaluated to:
+true > 1  // true -> 1
+1 > 1     // -> false
+```
 
 ---
 
