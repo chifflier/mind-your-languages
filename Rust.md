@@ -9,7 +9,7 @@ Table of Contents
       * [Pattern guard consuming value being matched](#pattern-guard-consuming-value-being-matched)
    * [Cursed/Weird code](#cursedweird-code)
       * [Quote each token](#quote-each-token)
-   * [Expected result: uh](#expected-result-uh)
+      * [Bastion of the Turbofish](#bastion-of-the-turbofish)
 <!--te-->
 
 # Rust
@@ -101,5 +101,15 @@ macro_rules! quote_each_token {
 This is [real code](https://github.com/dtolnay/quote/blob/3256f897c9821f9b397cb81851ae9a1672a84cb7/src/lib.rs#L759-L841)  from the `quote` crate! The link includes an explanation of how the macro works.
 
 Expected result: uh
+
+### Bastion of the Turbofish
+
+This examples comes from [`tests/ui/parser/bastion-of-the-turbofish.rs`](https://github.com/rust-lang/rust/blob/main/tests/ui/parser/bastion-of-the-turbofish.rs) in Rust's unit tests:
+```rust
+fn main() {
+    let (the, guardian, stands, resolute) = ("the", "Turbofish", "remains", "undefeated");
+    let _: (bool, bool) = (the<guardian, stands>(resolute));
+}
+```
 
 ---
