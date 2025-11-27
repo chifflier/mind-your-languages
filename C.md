@@ -1,21 +1,20 @@
-Table of Contents
-=================
-
-   * [C](#c)
-      * [Errors](#errors)
-         * [Cast signed vs unsigned](#cast-signed-vs-unsigned)
-      * [Tricks and less-known features](#tricks-and-less-known-features)
-         * [And operator like Perl](#and-operator-like-perl)
-         * [Pointer notation](#pointer-notation)
-         * [Preprocessor Abuse](#preprocessor-abuse)
-         * [Conditionals with Omitted Operands](#conditionals-with-omitted-operands)
-      * [The compiler is not your friend](#the-compiler-is-not-your-friend)
-         * [Read-only strings and segmentation faults](#read-only-strings-and-segmentation-faults)
-      * [Undefined and unspecified behaviors](#undefined-and-unspecified-behaviors)
-         * [Character size](#character-size)
-         * [Integer size](#integer-size)
-         * [Bitwise shift operators](#bitwise-shift-operators)
-         * [Function calls and arguments](#function-calls-and-arguments)
+* [Table of Contents](#table-of-contents)
+* [C](#c)
+   * [Errors](#errors)
+      * [Cast signed vs unsigned](#cast-signed-vs-unsigned)
+   * [Tricks and less-known features](#tricks-and-less-known-features)
+      * [And operator like Perl](#and-operator-like-perl)
+      * [Pointer notation](#pointer-notation)
+      * [Preprocessor Abuse](#preprocessor-abuse)
+      * [Conditionals with Omitted Operands](#conditionals-with-omitted-operands)
+      * [URL in code?](#url-in-code)
+   * [The compiler is not your friend](#the-compiler-is-not-your-friend)
+      * [Read-only strings and segmentation faults](#read-only-strings-and-segmentation-faults)
+   * [Undefined and unspecified behaviors](#undefined-and-unspecified-behaviors)
+      * [Character size](#character-size)
+      * [Integer size](#integer-size)
+      * [Bitwise shift operators](#bitwise-shift-operators)
+      * [Function calls and arguments](#function-calls-and-arguments)
 
 # C
 
@@ -106,6 +105,25 @@ diff = ((local->srx.transport_type - srx->transport_type) ?:
 ```
 and even more prone to type errors, as the condition must be type-compatible with the third operand.
 
+---
+
+### URL in code?
+
+The followowing code compiles and runs successfully:
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    https://i_am_an_url.net/
+    printf("hello, world\n");
+    return 0;
+}
+```
+
+The reasons are:
+- comments starting with `// ` are valid in C99
+- the first part (`http:`) is interpreted as a label
 ---
 
 
