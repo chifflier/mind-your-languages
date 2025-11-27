@@ -1,10 +1,13 @@
 Table of Contents
 =================
-
-   * [Javascript](#javascript)
-      * [Language gotchas](#language-gotchas)
-         * [Javascript breaks transitivity](#javascript-breaks-transitivity)
-         * [Parsing integers](#parsing-integers)
+<!--ts-->
+* [Table of Contents](#table-of-contents)
+* [Javascript](#javascript)
+   * [Language gotchas](#language-gotchas)
+      * [Javascript breaks transitivity](#javascript-breaks-transitivity)
+      * [Parsing integers](#parsing-integers)
+      * [Arrays are sometimes equal. Or not.](#arrays-are-sometimes-equal-or-not)
+<!--te-->
 
 # Javascript
 
@@ -74,6 +77,20 @@ NaN
 
 See https://tc39.github.io/ecma262/#sec-parseint-string-radix for the definition of `parseint`.
 
+---
+
+### Arrays are sometimes equal. Or not.
+
+```javascript
+[] == ![]
+true
+```
+
+Expected result: `false`
+
+Reason: ???
+
+This also works for non-null arrays (`[0] != [0]`)
 
 ---
 
