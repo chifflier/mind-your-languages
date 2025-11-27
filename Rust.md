@@ -11,6 +11,7 @@ Table of Contents
       * [Quote each token](#quote-each-token)
       * [Bastion of the Turbofish](#bastion-of-the-turbofish)
       * [Numbers? Nope, we have types!](#numbers-nope-we-have-types)
+      * [This cannot be true](#this-cannot-be-true)
 <!--te-->
 
 # Rust
@@ -123,5 +124,15 @@ pub type N1152921504606846976 = NInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UIn
 This is a definition of a singleton type representing an integer, defined recursively. This is used for [type-level programming](https://willcrichton.net/notes/type-level-programming/) at compile time.
 
 There other neat definitions [in the same file](https://docs.rs/typenum/1.18.0/src/typenum/gen/consts.rs.html#5729)
+
+### This cannot be true
+
+This examples comes from [`tests/ui/weird-exprs.rs`](https://github.com/rust-lang/rust/blob/91376f416222a238227c84a848d168835ede2cc3/tests/ui/weird-exprs.rs#L124) in Rust's unit tests:
+```rust
+let val = !((|(..):(_,_),(|__@_|__)|__)((&*"\\",'🤔')/**/,{})=={&[..=..][..];})//
+;
+```
+
+After removing comments, removing code with no action, and executing closures (left as exercise for reader :p), this expands to an equality test `let val = !(()==());` which results to `false`.
 
 ---
