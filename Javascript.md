@@ -88,9 +88,26 @@ true
 
 Expected result: `false`
 
-Reason: ???
+Reason:
+- for some reason, javascript converts both sides to numbers before comparing them (while they have the same type)
+- `[]` evaluates to `0`
+- `![]` evaluates to `false`, which then evaluates to `0`
 
-This also works for non-null arrays (`[0] != [0]`)
+This also works for non-null arrays containing zeroes (`[0] == ![0]`).
+
+However, this does not generalize, and gets worse:
+```javascript
+> [1]
+[1]
+> +[1]
+1
+> [1]==![1]
+false
+> [1]==[1]
+false
+> [1]==+[1]
+true
+```
 
 ---
 
