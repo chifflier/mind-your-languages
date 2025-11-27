@@ -1,3 +1,6 @@
+Table of Contents
+=================
+<!--ts-->
 * [Table of Contents](#table-of-contents)
 * [C](#c)
    * [Errors](#errors)
@@ -8,6 +11,7 @@
       * [Preprocessor Abuse](#preprocessor-abuse)
       * [Conditionals with Omitted Operands](#conditionals-with-omitted-operands)
       * [URL in code?](#url-in-code)
+      * [Shortest program in C](#shortest-program-in-c)
    * [The compiler is not your friend](#the-compiler-is-not-your-friend)
       * [Read-only strings and segmentation faults](#read-only-strings-and-segmentation-faults)
    * [Undefined and unspecified behaviors](#undefined-and-unspecified-behaviors)
@@ -15,6 +19,7 @@
       * [Integer size](#integer-size)
       * [Bitwise shift operators](#bitwise-shift-operators)
       * [Function calls and arguments](#function-calls-and-arguments)
+<!--te-->
 
 # C
 
@@ -124,6 +129,20 @@ int main(void)
 The reasons are:
 - comments starting with `// ` are valid in C99
 - the first part (`http:`) is interpreted as a label
+
+---
+
+### Shortest program in C
+
+The shortest program in C compiling with default compiler flags:
+```c
+int main;
+```
+
+Tested with: 15.2.1
+
+_Note: if you have any other solution, please submit it!_
+
 ---
 
 
