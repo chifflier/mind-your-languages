@@ -7,6 +7,7 @@ Table of Contents
       * [True, False, or not](#true-false-or-not)
       * [Function returns](#function-returns)
    * [Interesting facts](#interesting-facts)
+      * [The point of no-return](#the-point-of-no-return)
       * [Arrays start at index 1](#arrays-start-at-index-1)
 <!--te-->
 
@@ -55,6 +56,22 @@ Tested with: Lua 5.4.8
 ---
 
 ## Interesting facts
+
+### The point of no-return
+
+```lua
+> function foo() print(1); return; print(2) end
+stdin:1: 'end' expected near 'print'
+> function foo() print(1); do return end; print(2) end
+> foo()
+1
+```
+
+The `return` keyword can only be used as the last word statement in a block, so
+`return; print ...` will trigger an error. Interestingly, `do return end; print
+...` is accepted and works as a single `return`.
+
+Tested with: Lua 5.4.8
 
 ### Arrays start at index 1
 
