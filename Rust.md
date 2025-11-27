@@ -10,6 +10,7 @@ Table of Contents
    * [Cursed/Weird code](#cursedweird-code)
       * [Quote each token](#quote-each-token)
       * [Bastion of the Turbofish](#bastion-of-the-turbofish)
+      * [Numbers? Nope, we have types!](#numbers-nope-we-have-types)
 <!--te-->
 
 # Rust
@@ -111,5 +112,16 @@ fn main() {
     let _: (bool, bool) = (the<guardian, stands>(resolute));
 }
 ```
+
+### Numbers? Nope, we have types!
+
+The definitions of types in crate `digest` is [interesting](https://docs.rs/digest/0.10.7/digest/consts/type.N1152921504606846976.html):
+```rust
+pub type N1152921504606846976 = NInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UInt<UTerm, B1>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>, B0>>;
+```
+
+This is a definition of a singleton type representing an integer, defined recursively. This is used for [type-level programming](https://willcrichton.net/notes/type-level-programming/) at compile time.
+
+There other neat definitions [in the same file](https://docs.rs/typenum/1.18.0/src/typenum/gen/consts.rs.html#5729)
 
 ---
