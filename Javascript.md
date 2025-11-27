@@ -83,7 +83,7 @@ See https://tc39.github.io/ecma262/#sec-parseint-string-radix for the definition
 ### Arrays are sometimes equal. Or not.
 
 ```javascript
-[] == ![]
+> [] == ![]
 true
 ```
 
@@ -128,11 +128,11 @@ true
 false
 > [1]>[1]
 false
-[1]>=[1]
+> [1]>=[1]
 true
-[1]>=[0]
+> [1]>=[0]
 true
-[0]>=[1]
+> [0]>=[1]
 false
 ```
 
