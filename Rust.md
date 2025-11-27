@@ -12,6 +12,7 @@ Table of Contents
       * [Bastion of the Turbofish](#bastion-of-the-turbofish)
       * [Numbers? Nope, we have types!](#numbers-nope-we-have-types)
       * [This cannot be true](#this-cannot-be-true)
+      * [More macros](#more-macros)
 <!--te-->
 
 # Rust
@@ -134,5 +135,34 @@ let val = !((|(..):(_,_),(|__@_|__)|__)((&*"\\",'🤔')/**/,{})=={&[..=..][..];}
 ```
 
 After removing comments, removing code with no action, and executing closures (left as exercise for reader :p), this expands to an equality test `let val = !(()==());` which results to `false`.
+
+### More macros
+
+Macros can be defined ... in other macros. This snippet from the `uom` crate shows an example:
+```rust
+macro_rules! storage_type_types {
+    ($($macro_name:ident!($feature:tt, $name:ident, $($type:tt)+);)+) => {
+        $(#[macro_export]
+        #[doc(hidden)]
+        #[cfg(feature = $feature)]
+        macro_rules! $macro_name {
+            ($attr:tt @$M:ident $tt:tt) => {
+                storage_types!(@$M $attr $name, $($type)+; $tt);
+            };
+        }
+
+        #[macro_export]
+        #[doc(hidden)]
+        #[cfg(not(feature = $feature))]
+        macro_rules! $macro_name {
+            ($attr:tt @$M:ident $tt:tt) => {
+            };
+        })+
+    };
+}
+
+```
+
+Full code [here](https://github.com/iliekturtles/uom/blob/v0.37.0/src/storage_types.rs)
 
 ---
