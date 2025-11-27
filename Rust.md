@@ -1,11 +1,16 @@
 Table of Contents
 =================
-
-   * [Rust](#rust)
-      * [Undefined behaviors](#undefined-behaviors)
-         * [Floating point to integer casts](#floating-point-to-integer-casts)
-      * [Memory error](#memory-error)
-         * [Pattern guard consuming value being matched](#pattern-guard-consuming-value-being-matched)
+<!--ts-->
+* [Table of Contents](#table-of-contents)
+* [Rust](#rust)
+   * [Undefined behaviors](#undefined-behaviors)
+      * [Floating point to integer casts](#floating-point-to-integer-casts)
+   * [Memory error](#memory-error)
+      * [Pattern guard consuming value being matched](#pattern-guard-consuming-value-being-matched)
+   * [Cursed/Weird code](#cursedweird-code)
+      * [Quote each token](#quote-each-token)
+   * [Expected result: uh](#expected-result-uh)
+<!--te-->
 
 # Rust
 
@@ -71,3 +76,29 @@ See also: https://github.com/rust-lang/rust/issues/31287
 
 ---
 
+## Cursed/Weird code
+
+This section contains code that is not inherently wrong, but is quite hard to read, convoluted, or strange in other ways.
+
+### Quote each token
+
+Macros can quickly become _very_ hard to read or understand
+```rust
+macro_rules! quote_each_token {
+    ($tokens:ident $($tts:tt)*) => {
+        $crate::quote_tokens_with_context!{$tokens
+            (@ @ @ @ @ @ $($tts)*)
+            (@ @ @ @ @ $($tts)* @)
+            (@ @ @ @ $($tts)* @ @)
+            (@ @ @ $(($tts))* @ @ @)
+            (@ @ $($tts)* @ @ @ @)
+            (@ $($tts)* @ @ @ @ @)
+            ($($tts)* @ @ @ @ @ @)
+        }
+    };
+}
+```
+This is [real code](https://github.com/dtolnay/quote/blob/3256f897c9821f9b397cb81851ae9a1672a84cb7/src/lib.rs#L759-L841)  from the `quote` crate! The link includes an explanation of how the macro works.
+
+Expected result: uh
+---
