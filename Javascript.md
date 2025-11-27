@@ -14,6 +14,16 @@ Table of Contents
 
 # Javascript
 
+Javascript is especially permissive: due to implicit conversion rules to
+primitive objects, almost anything written can be executed.
+This gives so many interesting examples that this language justifies entire
+websites of weird examples!
+
+We will try to give explanations (at least, from the language point of view)
+and references, but to be clear, most if not all of these examples should have
+a "don't do that" note. Still, the language has a responsibility in the result
+because of its permittivity.
+
 * Many other examples here: [wtfjs](http://wtfjs.com)
 
 ## Language gotchas
