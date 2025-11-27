@@ -7,6 +7,7 @@ Table of Contents
       * [Javascript breaks transitivity](#javascript-breaks-transitivity)
       * [Parsing integers](#parsing-integers)
       * [Arrays are sometimes equal. Or not.](#arrays-are-sometimes-equal-or-not)
+      * [Abstract and relational abstract comparisons](#abstract-and-relational-abstract-comparisons)
 <!--te-->
 
 # Javascript
@@ -108,6 +109,57 @@ false
 > [1]==+[1]
 true
 ```
+
+Explanation:
+- when comparing _objects_, `==` returns true only for the _same_ object
+- when comparing different types, `==` first converts to the same type (so `[1]` can be converted to the number `1`) before comparison
+- see [the comparisons algorithms](#equality-algorithm)
+
+---
+
+### Abstract and relational abstract comparisons
+
+Comparisons using `==` and `>=` leads to suprising results when comparing objects:
+
+```javascript
+> [0]>=[0]
+true
+> [1]==[1]
+false
+> [1]>[1]
+false
+[1]>=[1]
+true
+[1]>=[0]
+true
+[0]>=[1]
+false
+```
+
+Expected result: ???
+
+Reason:
+<a name="equality-algorithm"></a>
+- The equality operators (`==` and `!=`) use [The Abstract Equality Comparison Algorithm](https://262.ecma-international.org/5.1/#sec-11.9.3) for comparison, while relational operators (`>`, `<` etc.) use [The Abstract Relational Comparison Algorithm](https://262.ecma-international.org/5.1/#sec-11.8.5).
+- `==` and `!` convert to the same type and then compare
+- relational operators (`>`, `<` etc.) convert to primitive type then compare
+
+
+Note: even if `==` is supposed to compare directly if the type is the same, this leads to other interesting results:
+```javascript
+> var a = [1]
+> typeof(a)
+"object"
+> a == a
+true
+> a == [1]
+false
+> [1]==+a
+true
+```
+
+This is caused by the comparison algorithm: for objects, it only returns `true` if both sides refer to the _same_ object.
+
 
 ---
 
