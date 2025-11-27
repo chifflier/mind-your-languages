@@ -20,6 +20,7 @@ education of developers or evaluators for secure software.
 - [Python](Python.md)
 - [Rust](Rust.md)
 - [Ruby](Ruby.md)
+- [Shell](Shell.md)
 
 ## Submitting new examples
 
