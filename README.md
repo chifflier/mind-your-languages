@@ -34,11 +34,13 @@ Use the [template](template.md).
 
 ## Credits
 
-Examples and ideas contributed by:
+Original examples and ideas contributed by:
 
 - Pierre Chifflier
 - Olivier Levillain
 - Éric Jaeger
+
+Other examples gathered from various sources (reddit/stackoverflow/...). Links to sources are included to credit their authors.
 
 ## License
 
