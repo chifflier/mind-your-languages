@@ -42,7 +42,9 @@ Expected result: `'0'==0 and 0=='0.0' and '0'=='0.0'`
 
 Result: `'0'==0 and 0=='0.0' and '0'<>'0.0'`
 
-Reason: Strings can be casted to integers, except if compared to another string
+Reason: when comparing values, a conversion is done if they are not of the same
+type (here, a conversion to integer or float). When both sides are strings,
+there is no conversion.
 
 ---
 
