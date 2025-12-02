@@ -4,6 +4,7 @@ Table of Contents
 * [Table of Contents](#table-of-contents)
 * [Javascript](#javascript)
    * [Language gotchas](#language-gotchas)
+      * [Syntax error? Add a dot!](#syntax-error-add-a-dot)
       * [Javascript breaks transitivity](#javascript-breaks-transitivity)
       * [No transitivity for comparison either](#no-transitivity-for-comparison-either)
       * [Parsing integers](#parsing-integers)
@@ -27,6 +28,21 @@ because of its permittivity.
 * Many other examples here: [wtfjs](http://wtfjs.com)
 
 ## Language gotchas
+
+---
+
+### Syntax error? Add a dot!
+
+```javascript
+> 10.toString()
+Uncaught SyntaxError: identifier starts immediately after numeric literal
+> 10..toString()
+"10"
+```
+
+Reason: this is a problem in the grammar. The dot '.' after the number 10 is
+interpreted as a floating point number, resulting in a parse error. Adding
+another dot disambiguates the call to `toString`.
 
 ---
 
