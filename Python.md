@@ -7,7 +7,42 @@
 
 # Python
 
+Other resources:
+- [wtfPython](https://github.com/satwikkansal/wtfPython)
+
 ## Unexpected and surprising
+
+---
+
+### `is` is not equal
+
+```python
+>>> a = 256
+>>> b = 256
+>>> a is b
+True
+
+>>> a = 257
+>>> b = 257
+>>> a is b
+False
+```
+
+Reason: the `is` operator tests if the operands refer to the _same_ objects.
+Internally, CPython keeps an array for [integers between -5 and
+256](https://docs.python.org/3/c-api/long.html), so cached objects are returned
+for values within this range, and new objects for other values.
+
+The correct operator to use here is `==`, which returns the expected results.
+
+Tested with: Python 3.7
+
+Note: Python has added checks since the tested version and redirect to the `==` operator, for ex. with Python 3.13:
+```python
+>>> 257 is 257
+<python-input-1>:1: SyntaxWarning: "is" with 'int' literal. Did you mean "=="?
+True
+```
 
 ---
 
