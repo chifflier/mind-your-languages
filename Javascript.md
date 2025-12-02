@@ -11,6 +11,7 @@ Table of Contents
       * [Arrays are sometimes equal. Or not.](#arrays-are-sometimes-equal-or-not)
       * [Abstract and relational abstract comparisons](#abstract-and-relational-abstract-comparisons)
       * [Objects and string obfuscation](#objects-and-string-obfuscation)
+      * [Split, whitespaces and empty strings](#split-whitespaces-and-empty-strings)
 <!--te-->
 
 # Javascript
@@ -231,6 +232,24 @@ Combining with other techniques to generate indices, it is easy to access a sing
 
 If the letter can be indexed from a generated string, this is rather trivial.
 More complex examples require encoding, but it can be done using 6 characters only (see "Writing a sentence without using the Alphabet" [Part 1](https://bluewings.github.io/en/writing-a-sentence-without-using-the-alphabet/#weird-javascript-generator) and [Part 2](https://bluewings.github.io/en/writing-a-sentence-without-using-the-alphabet-part-2/), and [this site](https://jsfuck.com/)).
+
+### Split, whitespaces and empty strings
+
+Searching for a whitespace separator in an empty string returns a non-empty result, but not is the separator is empty:
+```javascript
+> a=""
+""
+> a.split("")
+Array []
+> a.split(" ")
+Array [ "" ]
+```
+
+Reason: this is a consequence of the [`String.split`](https://tc39.es/ecma262/#sec-string.prototype.split) complex algorithm:
+- the case "separator is an empty string" is described in Note 1, and is special case is given if `this` is an empty string
+- if the separator is not empty, the algorithm is used and the substring is returned as array element
+
+Expected: coherent arrays, for exemple the method should always return elements in array (with only one element if split was not done)
 
 ---
 
