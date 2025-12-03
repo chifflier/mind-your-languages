@@ -67,6 +67,38 @@ Tested with: Python 2.7, Python 3.6
 
 ---
 
+### _mutatis mutandis_ tuples
+
+Tuples are immutable objects, so a modification attempt will raise an exception. However,
+in some cases, the modification is done even with the exception:
+```python
+>>> t=([1],2)
+>>> t[0]+=[3]
+Traceback (most recent call last):
+  File "<python-input-13>", line 1, in <module>
+    t[0]+=[3]
+    ~^^^
+TypeError: 'tuple' object does not support item assignment
+>>> t
+([1, 3], 2)
+```
+
+Expected result: `([1], 2)`
+
+Result: `([1, 3], 2)`
+
+Reason:
+- This is due to the order of operations (`iadd` then `assign`), and the fact that the read-only attribute is checked only when assigning
+- The first item is a list, and is first extended with success. This does not create a new object,
+but modifies the existing list.
+- When the list value is attempted to be assigned to the first tuple item, the exception is raised
+
+This is even [documented in the FAQ](https://docs.python.org/3/faq/programming.html#why-does-a-tuple-i-item-raise-an-exception-when-the-addition-works)
+
+Tested with: Python 3.13.7
+
+---
+
 ### You spin me round round
 
 ```python
