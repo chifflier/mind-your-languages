@@ -93,6 +93,7 @@ Reason:
 - The first item is a list, and is first extended with success. This does not create a new object,
 but modifies the existing list.
 - When the list value is attempted to be assigned to the first tuple item, the exception is raised
+- The tuple is not modified, but its first item was changed in-place
 
 This is even [documented in the FAQ](https://docs.python.org/3/faq/programming.html#why-does-a-tuple-i-item-raise-an-exception-when-the-addition-works)
 
