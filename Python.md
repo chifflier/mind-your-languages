@@ -2,6 +2,7 @@
 * [Python](#python)
    * [Unexpected and surprising](#unexpected-and-surprising)
       * [Default variables and references](#default-variables-and-references)
+      * [mutatis mutandis tuples](#mutatis-mutandis-tuples)
       * [You spin me round round](#you-spin-me-round-round)
 <!--te-->
 
@@ -67,7 +68,7 @@ Tested with: Python 2.7, Python 3.6
 
 ---
 
-### _mutatis mutandis_ tuples
+### mutatis mutandis tuples
 
 Tuples are immutable objects, so a modification attempt will raise an exception. However,
 in some cases, the modification is done even with the exception:
