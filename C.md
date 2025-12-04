@@ -137,6 +137,8 @@ int main()
 
 - `<% %>` can be used in place of `{ }`
 - `<: :>` can be used in place of `[ ]`
+- `%: %:%:` can be used in place of `# ##`
+- The symbols are defined in section "6.4.6 Punctuators" of N2912
 - these are _not_ trigrams!
 
 Tested with: gcc 15.2.1 (`-Wall -Wextra`)
