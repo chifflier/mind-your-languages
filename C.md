@@ -17,6 +17,7 @@ Table of Contents
       * [Line-continuation in comments and code](#line-continuation-in-comments-and-code)
       * [More symbols](#more-symbols)
       * [switch/case](#switchcase)
+      * [Arrays or not arrays](#arrays-or-not-arrays)
    * [The compiler is not your friend](#the-compiler-is-not-your-friend)
       * [Read-only strings and segmentation faults](#read-only-strings-and-segmentation-faults)
    * [Undefined and unspecified behaviors](#undefined-and-unspecified-behaviors)
@@ -258,6 +259,37 @@ The code above compiles (even if it has no particular meaning). The `case` state
 The most common use case is a way of unrolling loops named [Duff's device](https://en.wikipedia.org/wiki/Duff's_device).
 
 Given the poor readability of such code, one should avoid writing such code.
+
+---
+
+### Arrays or not arrays
+
+When a function takes an array as parameter:
+```c
+void takes_array(char foo[42]) {
+  char bar[42];
+  printf("foo: %zu bytes\n", sizeof(foo));
+  printf("bar: %zu bytes\n", sizeof(bar));
+}
+```
+
+The results may be different from expected:
+```
+foo: 8 bytes
+bar: 42 bytes
+```
+
+Reason:
+- the function parameter is passed as a pointer and not an array
+- this is specified in Section 6.7.6.3 "Function declarators":
+`A declaration of a parameter as "array of type" shall be adjusted to
+"qualified pointer to type", where the type qualifiers (if any) are those
+specified within the [ and ] of the array type derivation.`
+- this has several consequences:
+  - the input parameter is passed by _reference_, not _value_
+  - the size of the input array is _not_ verified to match the declared parameter
+
+Solution: passing arrays in parameters should be avoided
 
 ---
 
