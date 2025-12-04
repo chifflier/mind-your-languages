@@ -16,6 +16,7 @@ Table of Contents
       * [Shortest program in C](#shortest-program-in-c)
       * [Line-continuation in comments and code](#line-continuation-in-comments-and-code)
       * [More symbols](#more-symbols)
+      * [switch/case](#switchcase)
    * [The compiler is not your friend](#the-compiler-is-not-your-friend)
       * [Read-only strings and segmentation faults](#read-only-strings-and-segmentation-faults)
    * [Undefined and unspecified behaviors](#undefined-and-unspecified-behaviors)
@@ -229,6 +230,32 @@ The parser can refuse valid constructions (ambiguous grammar).
 x+++y; // this is valid and accepted: x++ + y;
 x+++++y; // this is valid but not accepted: x++ + ++y;
 ```
+
+---
+
+### switch/case
+
+Inside a `switch` statement, the `case` lines are labels, and they can be
+interleaved with other instructions (like loops):
+```c
+int i = 0;
+switch (n) {
+    do {
+        case 1:
+            i++;
+    }while (i < 10);
+    case 2:
+        i=3;
+    default:
+        i--;
+}
+```
+
+The code above compiles (even if it has no particular meaning).
+
+The most common use case is a way of unrolling loops named [Duff's device](https://en.wikipedia.org/wiki/Duff's_device).
+
+Given the poor readability of such code, one should avoid writing such code.
 
 ---
 
