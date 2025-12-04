@@ -251,7 +251,7 @@ switch (n) {
 }
 ```
 
-The code above compiles (even if it has no particular meaning).
+The code above compiles (even if it has no particular meaning). The `case` statements acts as labels that are also targets for `goto` statements.
 
 The most common use case is a way of unrolling loops named [Duff's device](https://en.wikipedia.org/wiki/Duff's_device).
 
