@@ -8,17 +8,23 @@ Table of Contents
    * [Tricks and less-known features](#tricks-and-less-known-features)
       * [And operator like Perl](#and-operator-like-perl)
       * [Pointer notation](#pointer-notation)
+      * [Unspecified order of function evaluation](#unspecified-order-of-function-evaluation)
       * [Preprocessor Abuse](#preprocessor-abuse)
+      * [Brackets](#brackets)
       * [Conditionals with Omitted Operands](#conditionals-with-omitted-operands)
       * [URL in code?](#url-in-code)
       * [Shortest program in C](#shortest-program-in-c)
+      * [Line-continuation in comments and code](#line-continuation-in-comments-and-code)
+      * [More symbols](#more-symbols)
    * [The compiler is not your friend](#the-compiler-is-not-your-friend)
       * [Read-only strings and segmentation faults](#read-only-strings-and-segmentation-faults)
    * [Undefined and unspecified behaviors](#undefined-and-unspecified-behaviors)
-      * [Character size](#character-size)
+      * [Character sign](#character-sign)
       * [Integer size](#integer-size)
       * [Bitwise shift operators](#bitwise-shift-operators)
       * [Function calls and arguments](#function-calls-and-arguments)
+      * [Floating-point exception with integers](#floating-point-exception-with-integers)
+      * [Strict aliasing](#strict-aliasing)
 <!--te-->
 
 # C
@@ -61,6 +67,7 @@ The `&&` and `||` operators can be used in a statement like in Perl:
 ```c
 (i>1) && printf("more than one argument\n");
 ```
+
 ---
 
 ### Pointer notation
@@ -75,6 +82,27 @@ int i = 4;
 printf("char %d: %c\n", i, i[hello]);
 printf("char %d: %c\n", i, i["hello, world"]);
 ```
+
+---
+
+### Unspecified order of function evaluation
+
+What is the order of evaluation of functions `f, g, h, i, j`?
+```c
+f(g(h()), i(j()))
+```
+
+All we can say is:
+- `h` will be evaluated before `g`
+- `j` will be evaluated before `i`
+- `g` and `i` will be evaluated before `f`
+- we cannot, for example, know if `j` is evaluated before or after `h`
+
+The order of function evaluation in the same statement is unspecified. Extract
+from the C specification (section 5.2.2): `The order of evaluation of arguments is unspecified.
+All side effects of argument expression evaluations take effect before the
+function is entered.`
+
 ---
 
 ### Preprocessor Abuse
@@ -88,6 +116,30 @@ int i =
 #include "/dev/tty"
 ;
 ```
+
+---
+
+### Brackets
+
+The following code compiles and runs successfully:
+```c
+#include<stdio.h>
+int main()
+<%
+    int arr <:10:>;
+    arr<:0:> = 1;
+    printf("%d", arr<:0:>);
+
+    return 0;
+%>
+```
+
+- `<% %>` can be used in place of `{ }`
+- `<: :>` can be used in place of `[ ]`
+- these are _not_ trigrams!
+
+Tested with: gcc 15.2.1 (`-Wall -Wextra`)
+
 ---
 
 ### Conditionals with Omitted Operands
@@ -139,12 +191,46 @@ The shortest program in C compiling with default compiler flags:
 int main;
 ```
 
-Tested with: 15.2.1
+Tested with: gcc 15.2.1
 
 _Note: if you have any other solution, please submit it!_
 
 ---
 
+### Line-continuation in comments and code
+
+The followowing comment and variable definitions are accepted:
+```c
+int main() {
+    /\
+/ Line Com\
+ment
+    i\
+n\
+t \
+a\
+b\
+c\
+;
+
+    return 0;
+}
+```
+
+The line continuation character is allowed in comments, and even in tokens,
+keywords and variable names.
+
+---
+
+### More symbols
+
+The parser can refuse valid constructions (ambiguous grammar).
+```c
+x+++y; // this is valid and accepted: x++ + y;
+x+++++y; // this is valid but not accepted: x++ + ++y;
+```
+
+---
 
 
 ## The compiler is not your friend
@@ -181,9 +267,11 @@ Tested with: gcc 6.3.0, clang 3.9
 
 ---
 
-### Character size
+### Character sign
 
-The size of a `char` is implementation defined. On some architectures it will be signed, and unsigned on others.
+The C standard does not specify if plain `char` is signed or unsigned, so the
+size of a `char` is implementation defined. On some architectures it will be
+signed, and unsigned on others.
 
 Reference: ISO C99 section 6.2.5
 
@@ -236,8 +324,6 @@ Solution: don't do that
 
 ---
 
----
-
 ### Function calls and arguments
 
 The expressions passed as arguments of a function call are evaluated in an unspecified order.
@@ -283,5 +369,124 @@ Meaning that `x=1` was executed after `x=3` and passed as both arguments of func
 Reference: ISO C99 section 6.5.2.2
 
 Solution: don't do that
+
+---
+
+### Floating-point exception with integers
+
+The following code uses only integers:
+```c
+/* Note: using volatile to prevent the div to be optimized out */
+volatile int int_min = INT_MIN;
+volatile int minus_1 = -1;
+
+printf("%d\n", int_min / minus_1);
+```
+
+This code will reliably trigger a runtime error (on `x86/x64` platforms):
+```
+[1]    211660 floating point exception (core dumped)  ./a.out
+```
+
+When dividing the smallest negative integer by `-1`, the result _should_
+be positive, but in fact cannot be represented using two's complement (it would
+be `INT_MAX + 1`), so it is undefined behavior.
+
+Cause:
+- on `x86` platforms, the [`idiv`](https://www.felixcloutier.com/x86/idiv) operation will raise a division error `#DE`
+- the error is caught by the operating system, which signals it to the program
+- when an error occurs in integer operations, POSIX requires it to be `SIGFPE`
+
+This is platform-dependant, and will not raise the same error on ARM hardware,
+for example.
+
+Note: this does _not_ happen when multiplying by `-1`. The code `INT_MIN * -1`
+will also overflow, but in that case the overflow is silently ignored.
+
+Note 2: the result is the same when using the `div` function from `stdlib.h`
+
+Tested with: gcc 15.2.1, clang 21.1.5
+
+---
+
+### Strict aliasing
+
+The following code gives different results, depending on the optimization level:
+```c
+#include <stdio.h>
+
+long foo(int *x, long *y) {
+  *x = 0;
+  *y = 1;
+  return *x;
+}
+
+int main(void) {
+  long l;
+  printf("%ld\n", foo((int *)&l, &l));
+}
+```
+
+The output is the following:
+```
+$ gcc strict-aliasing.c
+$ ./a.out
+1
+$ gcc -O2 strict-aliasing.c
+$ ./a.out
+0
+```
+
+Cause:
+- this code violates the _strict aliasing rule_, and creates aliased pointers
+- when compiling with `-O2`, the compiler makes different assumptions when optimizations are enabled
+
+This is a common source of undefined behaviors, especially in code
+aliasing for example a `&uint64_t` with a `uint32_t *` pointer.
+
+The following function illustrates this:
+```c
+uint32_t swap_words(uint32_t arg)
+{
+  uint16_t* const volatile sp = (uint16_t*)&arg;
+  uint16_t        hi = sp[0];
+  uint16_t        lo = sp[1];
+
+  sp[1] = hi;
+  sp[0] = lo;
+
+  return (arg);
+}
+```
+
+This code is wrong, and will return different results depending on the optimization level:
+```
+$ # input value is 0xabcd1234
+$ gcc -Wall -Wextra strict-aliasing-uint32.c
+$ ./a.out
+x=abcd1234
+y=1234abcd
+
+$ gcc -O2 -Wall -Wextra strict-aliasing-uint32.c
+$ ./a.out
+x=abcd1234
+y=abcd1234
+```
+
+Solution: do not use pointer aliasing!
+
+The following compiler flags can help detecting aliasing: `-fstrict-aliasing -Wstrict-aliasing=2`:
+```
+strict-aliasing-uint32.c: In function ‘swap_words’:
+strict-aliasing-uint32.c:7:44: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+    7 |   uint16_t* const volatile sp = (uint16_t*)&arg;
+      |
+```
+
+Other resources:
+- [Understanding Strict Aliasing](https://cellperformance.beyond3d.com/articles/2006/06/understanding-strict-aliasing.html)
+- [The Strict Aliasing Situation is Pretty Bad](https://blog.regehr.org/archives/1307)
+
+Tested with: gcc 15.2.1, clang 21.1.5
 
 ---
